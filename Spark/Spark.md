@@ -24,11 +24,14 @@
 * Todo RDD es calculado al vuelo, si se quiere guardar uno en memoria para consultarlo constantemente se usa ```persist()```
 * Tanto en scala como en java, ```persist()```se guarda en el heap de la JVM como objetos, sin serializarlos. Cuando se guardan a disco siempre se searializan: 
 
-  | Nivel  | Espacio | Tiempo CPU  | En memoria| En disco
-  | ------------- |:-------------| :-----|:----|
+
+
+  | Nivel  | Espacio | Tiempo CPU  | En memoria| En disco|
+  | ------------- |:-------------| :-----|:----|:-----|
   |MEMORY_ONLY| Alta| Baja| Y| N|
   |MEMORY_ONLY_SER| Baja| Alta| Y| N|
   |MEMORY_AND_DISK| Alta| Media| //|//|
+  
   
 
 * Transformaciones. 
