@@ -4,11 +4,9 @@
 
 
 * Spark es un motor general para procesar grandes cantidades de datos, responsable de calendarizar, distribuir y monitorear aplicaciones que consisten en multiples tareas en multiples maquinas.
-![alt text][stack_spark]
+![alt text](https://bitbucket.org/mvilchis/notas/src/master/Spark/img/stack.jpg)
 
+* El core abarca funcionalidades básicas para Spark, como calendarización de tareas, manejo de memorias, recuperación de fallos e interaccipon con los sistemas de almacenamiento, entre otros. 
 
-* El core abarca funcionalidades bÃ¡sicas para Spark, como calendarizaciÃ³n de tareas, manejo de memorias, recuperaciÃ³n de fallos e interaccipon con los sistemas de almacenamiento, entre otros. 
+* Para permitir una máxima flexibilidad, Spark puede correr sobre varios manejadores de clusters, como Hadoop YARN, Apache Mesos o solo Spark con su Standalone Scheduler.
 
-* Para permitir una mÃ¡xima flexibilidad, Spark puede correr sobre varios manejadores de clusters, como Hadoop YARN, Apache Mesos o solo Spark con su Standalone Scheduler.
-
-[stack_spark]:(img/stack.jpg?raw=true)
