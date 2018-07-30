@@ -26,6 +26,8 @@
   (Para ver los resultados finalizar con ```rdd.collect().mkString(","))```). Sea:
    ```val rdd = sc.parallelize(List(1,2,3,3)); ```
   ```val rdd2 = sc.parallelize(List(1,4,5))```
+
+
   | Nombre de la funcion | Objetivo  | Ejemplo  | Resultado|
   | ------------- |:-------------| :-----|:----|
   |map()      | Aplica la funcion a cada elemento  | rdd.map(x =>x.to(3)) | {[1,2,3][2,3],[3],[3]}
@@ -41,6 +43,8 @@
   Sea:
   ```val rdd = sc.parallelize(List(1,2,3,3)); ```
   ``` ```
+
+
   | Nombre de la funcion | Objetivo  | Ejemplo  | Resultado|
   | ------------- |:-------------| :-----|:----|
   |collect() |Regresa todos los elementos de rdd | rdd.collect()) | {1,2,3,3}
