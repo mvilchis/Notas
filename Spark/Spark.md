@@ -22,6 +22,15 @@
 * Recordar que Spark es lazy, generando un mapa de las dependencias para optimizar (lineage graph)
 * Cada RDD ofrece dos operaciones, transformaciones y acciones. Donde las transformaciones generan un nuevo RDD y las acciones generan un resultado basado en un RDD y puede que regrese el resultado al driver o que lo guarde.
 * Todo RDD es calculado al vuelo, si se quiere guardar uno en memoria para consultarlo constantemente se usa ```persist()```
+* Tanto en scala como en java, ```persist()```se guarda en el heap de la JVM como objetos, sin serializarlos. Cuando se guardan a disco siempre se searializan: 
+
+  | Nivel  | Espacio | Tiempo CPU  | En memoria| En disco
+  | ------------- |:-------------| :-----|:----|
+  |MEMORY_ONLY| Alta| Baja| Y| N|
+  |MEMORY_ONLY_SER| Baja| Alta| Y| N|
+  |MEMORY_AND_DISK| Alta| Media| //|//|
+  
+
 * Transformaciones. 
   (Para ver los resultados finalizar con ```rdd.collect().mkString(","))```). Sea:
    ```val rdd = sc.parallelize(List(1,2,3,3)); ```
@@ -58,6 +67,7 @@
   |fold(zero)(function)|Combina los elementos dando valor inicial. ** Tiene que regresar el mismo tipo que el rdd**| rdd.fold(0)((x,y) => x+y) | 9
    |aggregate(zero)(seqOp)(combOp)|Similar a reduce, sin regresar el mismo tipo |rdd.aggregate((0,0)) ((x,y) => (x._1 + y, x._2 +1), (x,y)=>(x._1+y._1, x._2 + y._2) ) | (9,4)
    |foreach(function)   |Aplica la función a cada elemento, sin regresar valor| rdd.foreach(func) | Nada
+
 
 ## Ejemplos
 
