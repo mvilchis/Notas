@@ -1,4 +1,3 @@
-
 # Notas Spark
 ## Aspectos generales
 
