@@ -15,7 +15,7 @@ Es importante recordar que la red de docker en el host se encuentra ligada como 
  En la imagen se muestran dos contenedores compartiendo la una interfaz existente. Esta funcionalidad es herdedada de docker y kubernetes la implementa creando un pod especial iniciado en ```pause```. 
  El esquema con mas nodos se vería: 
  <img src="https://raw.githubusercontent.com/mvilchis/Notas/master/kubernetes/images/hosts.png" height="240">
- 
+Este esquema genera un problema, en cada nodo no sabe que espacio de direcciones privadas se le asigno a los otros nodos para su servicio de docker. Por lo que kubernetes ofrece un espacio de direcciones: ```overall address space ```   asignando las direcciones basado en cada nodo. La otra solución es una tabla de ruteo.
  
  
 
