@@ -12,6 +12,12 @@ Es importante recordar que la red de docker en el host se encuentra ligada como 
 * **Pod**: Sea ```veth0``` la interfaz virtual de red del pod. Esta será ligada a 
  la red de docker (Funcionando como gateway para la interfaz ```veth0```). 
  <img src="https://raw.githubusercontent.com/mvilchis/Notas/master/kubernetes/images/host.png" height="240">
+ En la imagen se muestran dos contenedores compartiendo la una interfaz existente. Esta funcionalidad es herdedada de docker y kubernetes la implementa creando un pod especial iniciado en ```pause```. 
+ El esquema con mas nodos se vería: 
+ <img src="https://raw.githubusercontent.com/mvilchis/Notas/master/kubernetes/images/hosts.png" height="240">
+ 
+ 
+ 
 
 ## Comandos principales 
 * Listar los pods del cluster, mostrando en que nodo estan
@@ -21,6 +27,7 @@ Es importante recordar que la red de docker en el host se encuentra ligada como 
   nombre igual a django_ldap) . Este comando puede ser abrir una terminal.
 
  ``` kubectl exec -it django_ldap bash ```
+
  Otro ejemplo puede ser un cat al archivo hosts:
 
  ```kubectl exec -it django_ldap cat /etc/host ```
