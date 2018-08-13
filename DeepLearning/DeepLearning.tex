@@ -1,0 +1,143 @@
+%This is a LaTeX template for homework assignments
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{parskip}
+\usepackage{algorithm}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{algpseudocode}
+\usepackage{geometry}
+\usepackage{amssymb}
+\usepackage{dsfont}
+\geometry{ top=17mm, bottom=16mm, left=15mm, right=15mm }
+\begin{document}
+\title{\vspace{-1cm}Deep Learning}
+\author{Miguel Vilchis}
+\date{03 de agosto de 2018}
+\maketitle
+\section{Definiciones generales}
+  \begin{itemize}
+    \item Recordar que el objetivo es encontrar la función que 
+    logra clasificar correctamente cada entrada.
+    \item Funciones de activación: Se usan funciones no lineales para
+    poder aprender funciones no lineales.
+    \item Parametrización: Proceso de definir que parametros son
+    necesarios para un modelo dado.
+    \item Función de perdida: Cuantifica que tan bien la clase de
+    salida se apega a la verdadera clase. (Buscamos minimizar dicha
+    función)
+    \item Función de Scoring: Esta función acepta los datos como
+    entrada y los mapea a una etiqueta de clase. Ejemplo: 
+    \[ f(x_i, W, b) = Wx_i+b
+    \] 
+    Donde: 
+    \begin{lstlisting}
+    W = [K x D], x_i = [D x 1] y b = [K x 1]
+    \end{lstlisting}
+    Siendo K el número de clases para clasificar.
+    \item Bias: Permite recorrer o transladar nuestra función de
+    scoring en una u otra dirección sin modificar la matriz de pesos.
+  \end{itemize}
+\section{Función de perdida}
+  Es común usar funciones \textit{hinge} pero se usa mas 
+  \textit{cross-entropy loss} y \textit{softmax} en el contexto de
+  deep learning y redes convolucionales.
+  \begin{itemize}
+      \item Multi-class svm loss \\
+       Agregando la columna de bias a la matriz de pesos, sea:
+       \[
+       s = f(x_i, W) = Wx_i
+       \]
+	   Dado el punto \textit{i-esimo}, el score predicho de la clase \textit{jth} queda definido como:
+	   \[
+	   s_j = f(x_i, W)_j
+	   \]
+	   De aquí obtenemos la función \textit{hinge loss function}
+	   (sumando las clasificaciones incorrectas de cada clase y
+	   comparandola con la salida de la función score):
+	   \[
+	   L_i = \sum_{j \neq y_i} max(0, s_j - s_{y_i}+1)
+	   \]
+	   Mientras que la función \textit{squared hinge loss} (penaliza
+	   mas la perdida) se define como:
+	   \[
+	   L_i = \sum_{j \neq y_i} max(0, s_j - s_{y_i}+1)^2
+	   \]
+    \item Cross-entropy loss: Siendo softmax una función regresa probabilidades 
+    para cada clase mientras que la función  \textit{hinge} nos da el margen. El
+    clasificador softmax es la generalización de la forma binaria de la regresión
+    logística. $f(x)_i = e^{s_{x_i}}/\sum_{j}e^{x_j}$ y la función de perdida \textit{cross-entropy}
+    \[
+    L_i = -ln(e^{s_{y_i}}/\sum_{j}e^{y_j})
+    \]
+    Entonces, la función de perdida debe minimizar el logaritmo negativo de la
+    probabilidad de la clase correcta: 
+    \[
+    L_i = -lnP(Y=y_i|X=x_i) 
+    \]
+    Donde 
+    \[
+    P(Y=y_i|X=x_i) = e^{s_{y_i}}/\sum_j e^{s_j}
+    \]
+    Por lo que la función de perdida \textit{cross-entropy}
+    \[
+    L = \frac{1}{N} \sum_{i=1}^N L_i
+    \]
+\end{itemize}
+\section{Descenso de gradiente}
+Nosotros tratamos las superficies de perdida como convexas incluso si no lo son,
+porque hace buen trabajo.
+El algoritmo de descenso de gradiente tiene dos veritentes:
+\begin{enumerate}
+    \item La implementación estandart \textit{vanilla}
+    \item La versión optimizada \textit{estocástica}
+\end{enumerate}
+El pseudocodigo del descenso de gradiente es:
+ \begin{lstlisting}
+  while True:
+   Wgradient = evaluate_gradient(loss, data, W)
+   W += -alpha *Wgradient
+ \end{lstlisting}
+Para el gradiente estocástico, en lugar de calcular el gradiente para todo el conjunto de datos, se hace sobre un sampleo de estos. 
+ \begin{lstlisting}
+  while True:
+   batch = next_training_batch(data, 256)
+   Wgradient = evaluate_gradient(loss, data, W)
+   W += -alpha *Wgradient
+ \end{lstlisting}
+\section{Momentum}
+Sea $W = W - \alpha \bigtriangledown_{W} f(W)$ el termino V momentum, ponderado por $\gamma$: 
+\[
+V = \gamma V_{t-1} + \alpha \bigtriangledown_{W} f(W)  \longrightarrow W = W - V_t
+\]
+Comunmente se usa $\gamma = 0.9$
+\section{Regularización}
+Es la técnica que asegura que nuestro modelo generalice bien, ayudandonos a controlar la capacidad de nuestro modelo.  Sea la función de perdida \textit{cross-entropy} $L$
+\[
+L_i = -log(e^{s_{y_i}}/ \sum_je^{s_j}) \longrightarrow L = \frac{1}{N}\sum{i=1}^N L_i
+\]
+La función de regularización o decaemiento del peso se define como: 
+\[
+R(W) = \sum_i \sum_j W_{i,j}^2
+\]
+Actualizando la función de perdida: 
+\[
+L = \frac{1}{N}\sum{i=1}^N L_i + \lambda R(W)
+\]
+Entonces: 
+\[
+W = W - \alpha \bigtriangledown_W f(W) -\lambda R(W)
+\]
+Tipos de regularización:
+\begin{enumerate}
+    \item L2 o decaemiento de peso: $R(W)= \sum_i \sum_j W_{i,j}^2$
+    \item L1: $R(W)= \sum_i \sum_j |W_{i,j}|$
+\end{enumerate}
+\end{document}
+
