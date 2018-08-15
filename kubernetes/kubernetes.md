@@ -4,17 +4,17 @@
 
 * **Pod**: Un pod consiste en uno mas contenedores que tienen el mismo ```host```, 
   permitiendo compartir el stack de red(permitiendo comunicarse por localhost). También comparten volumenes y otros recursos.
-
+* **Services**: Los servicios permiten ligar los endpoints de los pods a ips persistentes, dado que los pods son efimeros, en el sentido que al reiniciarse o crearse replicas pueden cambiar de endpoint y hasta de nodo. Es a traves de un selector que liga el trafico hacia el pod. 
 
 ## Network 
 Es importante recordar que la red de docker en el host se encuentra ligada como bridge.
 * **Pod**: Sea ```veth0``` la interfaz virtual de red del pod. Esta será ligada a 
- la red de docker (Funcionando como gateway para la interfaz ```veth0```). 
+     la red de docker (Funcionando como gateway para la interfaz ```veth0```). 
 
- <img src="https://raw.githubusercontent.com/mvilchis/Notas/master/kubernetes/images/host.png" height="240">
+     <img src="https://raw.githubusercontent.com/mvilchis/Notas/master/kubernetes/images/host.png" height="240">
 
 
- En la imagen se muestran dos contenedores compartiendo la una interfaz existente. Esta funcionalidad es herdedada de docker y kubernetes la implementa creando un pod especial iniciado en ```pause```. 
+   > En la imagen se muestran dos contenedores compartiendo la una interfaz existente. Esta funcionalidad es herdedada de docker y kubernetes la implementa creando un pod especial iniciado en ```pause```. 
  El esquema con mas nodos se vería: 
 
 
@@ -29,14 +29,16 @@ Este esquema genera un problema, en cada nodo no se sabe que espacio de direccio
 * Listar los pods del cluster, mostrando en que nodo estan
 
   ```kubectl get pods -o wide ```
+* Listar los servicios del cluster
+  ``` kubectl get services```
 * Aplicar un comando a un pod dado, (para este ejemplo supongamos que el pod tiene 
   nombre igual a django_ldap) . Este comando puede ser abrir una terminal.
 
  ``` kubectl exec -it django_ldap bash ```
 
- Otro ejemplo puede ser un cat al archivo hosts:
+   Otro ejemplo puede ser un cat al archivo hosts:
 
- ```kubectl exec -it django_ldap cat /etc/host ```
+   ```kubectl exec -it django_ldap cat /etc/host ```
 * Ver los logs del pod (Mostrará la salida stdout de los comandos que esten 
   ejecutandose en el pod)
 
