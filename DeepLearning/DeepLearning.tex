@@ -18,7 +18,7 @@
 \begin{document}
 \title{\vspace{-1cm}Deep Learning}
 \author{Miguel Vilchis}
-\date{03 de agosto de 2018}
+\date{}
 \maketitle
 \section{Definiciones generales}
   \begin{itemize}
@@ -42,6 +42,8 @@
     Siendo K el número de clases para clasificar.
     \item Bias: Permite recorrer o transladar nuestra función de
     scoring en una u otra dirección sin modificar la matriz de pesos.
+    \item Epoca: Cada vez que una red neuronal ha visto el conjunto completo 
+    de entrenamiento se dice que una época ha pasado. 
   \end{itemize}
 \section{Función de perdida}
   Es común usar funciones \textit{hinge} pero se usa mas 
@@ -147,11 +149,60 @@ Tipos de regularización:
 Una vez que aplicamos la función de scoring, para determinar si la neurona se enciende o no utilizamos una función de
 activación.
 \begin{itemize}
- \item Función sigmoide: Esta función es una buena opción ya que es continua y diferenciable donde sea, es simetrica
- en en eje y tiene una aproximación asintótica a los valores de saturación (0,1).
- 
+ \item Función \textit{sigmoid}: Esta función es una buena opción ya que es continua y diferenciable donde sea, es simetrica
+ en en eje y tiene una aproximación asintótica a los valores de saturación (0,1).\\
+ Los grandes problemas de la función son: La salida no está centrada en 0 y las neuronas saturadas matan el gradiente 
+ ya que los delta son extremadamente pequeños.
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/Sigmoid.png}
+  \caption{Función: $s(t) = \frac{1}{1+e^{-t}}$}
+  \end{figure}
+ \item Función \textit{tanh}: Es una función centrada en 0, pero el gradiente sigue siendo eliminado con neuronas 
+  saturadas: 
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/Tanh.png}
+  \caption{Función: $s(t) = \frac{e^t -e^{-t} }{e^{t}+e^{-t}}$}
+ \end{figure}
+ \item Función \textit{ReLU}: Es la función de activación más popular en deeplearning, el problema que tiene 
+ es que con valores cercanos a 0, el gradiente no puede ser tomado. 
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/Relu.png}
+  \caption{Función: $s(t) = max(0,t)$}
+ \end{figure}
+ \item Función \textit{Leaky ReLU}: Es una variante de \textit{ReLU} que permite tomar gradientes cercanos a 0, diferentes 
+ de cero. 
+ \[ s(t) = \left \{ 
+               \begin{array}{cc}
+                t &  Si\ t \geq 0 \\
+                \alpha \ \text{x}\  t &  En \ otro \ caso
+               \end{array}
+           \right .
+  \]   
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/Leaky_Relu.png}
+  \caption{Grafica con $\alpha = 0.3$}
+ \end{figure}
+
+\item Functión \textit{Exponential Linear Units (ELU)}: Función que surge de un articulo del 2015
+(\textit{Fast and Accurate Deep Learning by Exponential Linear Units}), en donde 
+se obtienen mejor presición que con la función  $ReLU$, $ELU$ rara vez tiene peor desempeño que $ReLU$ (Usualmente se 
+usa un valor de $\alpha$ cercano a 1.0)
+ \[ s(t) = \left \{ 
+               \begin{array}{cc}
+                t &  Si\ t \geq 0 \\
+                \alpha \ \text{x}\ (e^{t}-1) &  En \ otro \ caso
+               \end{array}
+           \right .
+  \]   
+ \begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/ELU.png}
+  \caption{Grafica con $\alpha = 1.0$}
+ \end{figure}
 \end{itemize}
-
-
 \end{document}
 
