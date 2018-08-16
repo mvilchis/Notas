@@ -3,7 +3,6 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{float}
-\usepackage{placeins}
 \usepackage{graphicx}
 \usepackage{multicol}
 \usepackage[spanish,es-nodecimaldot]{babel}
@@ -23,8 +22,8 @@
 \maketitle
 \section{Definiciones generales}
   \begin{itemize}
-    \item Recordar que el objetivo es encontrar la función que 
-    logra clasificar correctamente cada entrada.
+    \item Recordar que el objetivo que tiene deep learning es encontrar 
+    la función que logra clasificar correctamente cada entrada.
     \item Funciones de activación: Se usan funciones no lineales para
     poder aprender funciones no lineales.
     \item Parametrización: Proceso de definir que parametros son
@@ -50,27 +49,29 @@
   deep learning y redes convolucionales.
   \begin{itemize}
       \item Multi-class svm loss \\
-       Agregando la columna de bias a la matriz de pesos, sea:
+       Se puede agregar la columna de Bias a la matriz de peso, con este truco, podemos
+       dejar de preocuparnos por actualizar el bias, para solo parametrizar la matriz
+       de pesos, haciendo esto nuestra función queda expresada como:
        \[
        s = f(x_i, W) = Wx_i
        \]
-	   Dado el punto \textit{i-esimo}, el score predicho de la clase \textit{jth} queda definido como:
-	   \[
-	   s_j = f(x_i, W)_j
-	   \]
-	   De aquí obtenemos la función \textit{hinge loss function}
-	   (sumando las clasificaciones incorrectas de cada clase y
-	   comparandola con la salida de la función score):
-	   \[
-	   L_i = \sum_{j \neq y_i} max(0, s_j - s_{y_i}+1)
-	   \]
-	   Mientras que la función \textit{squared hinge loss} (penaliza
-	   mas la perdida) se define como:
-	   \[
-	   L_i = \sum_{j \neq y_i} max(0, s_j - s_{y_i}+1)^2
-	   \]
-    \item Cross-entropy loss: Siendo softmax una función regresa probabilidades 
-    para cada clase mientras que la función  \textit{hinge} nos da el margen. El
+       Dado el punto \textit{i-esimo}, el score predicho de la clase \textit{jth} queda definido como:
+       \[
+       s_j = f(x_i, W)_j
+       \]
+       De aquí obtenemos la función \textit{hinge loss function}
+       (sumando las clasificaciones incorrectas de cada clase y
+       comparandola con la salida de la función score):
+       \[
+         L_i = \sum_{j \neq y_i} max(0, s_j - s_{y_i}+1)
+       \]
+       Mientras que la función \textit{squared hinge loss} penaliza
+       mas la perdida y se define como:
+       \[
+         L_i = \sum_{j \neq y_i} max(0, s_j - s_{y_i}+1)^2
+        \]
+    \item Cross-entropy loss: Mientras la funcón softmax  regresa probabilidades 
+    para cada clase. La función  \textit{hinge} nos da el margen. El
     clasificador softmax es la generalización de la forma binaria de la regresión
     logística. $f(x)_i = e^{s_{x_i}}/\sum_{j}e^{x_j}$ y la función de perdida \textit{cross-entropy}
     \[
@@ -91,9 +92,8 @@
     \]
 \end{itemize}
 \section{Descenso de gradiente}
-Nosotros tratamos las superficies de perdida como convexas incluso si no lo son,
-porque hace buen trabajo.
-El algoritmo de descenso de gradiente tiene dos veritentes:
+Nosotros tratamos las superficies de perdida como convexas incluso si no lo son, ya que el hacerlo así 
+da buenos resultados. El algoritmo de descenso de gradiente tiene dos veritentes:
 \begin{enumerate}
     \item La implementación estandart \textit{vanilla}
     \item La versión optimizada \textit{estocástica}
@@ -112,13 +112,17 @@ Para el gradiente estocástico, en lugar de calcular el gradiente para todo el c
    W += -alpha *Wgradient
  \end{lstlisting}
 \section{Momentum}
-Sea $W = W - \alpha \bigtriangledown_{W} f(W)$ el termino V momentum, ponderado por $\gamma$: 
+La idea es que, cuando estas descendiendo, este descenso te otorgué impulso para llegar más rápido (en menos épocas) 
+a tener menor pérdida y mejor precisión. Sea $W = W - \alpha \bigtriangledown_{W} f(W)$ el termino V momentum, 
+ponderado por $\gamma$: 
 \[
-V = \gamma V_{t-1} + \alpha \bigtriangledown_{W} f(W)  \longrightarrow W = W - V_t
+  V = \gamma V_{t-1} + \alpha \bigtriangledown_{W} f(W)  \longrightarrow W = W - V_t
 \]
 Comunmente se usa $\gamma = 0.9$
 \section{Regularización}
-Es la técnica que asegura que nuestro modelo generalice bien, ayudandonos a controlar la capacidad de nuestro modelo.  Sea la función de perdida \textit{cross-entropy} $L$
+Es la técnica que asegura que nuestro modelo generalice bien, 
+ayudandonos a controlar la capacidad de nuestro modelo. Lo cual logramos al penalizar altos valores de peso
+,ya que, estos influyen más en la predicción de salida. Sea la función de perdida \textit{cross-entropy} $L$
 \[
 L_i = -log(e^{s_{y_i}}/ \sum_je^{s_j}) \longrightarrow L = \frac{1}{N}\sum{i=1}^N L_i
 \]
@@ -139,5 +143,15 @@ Tipos de regularización:
     \item L2 o decaemiento de peso: $R(W)= \sum_i \sum_j W_{i,j}^2$
     \item L1: $R(W)= \sum_i \sum_j |W_{i,j}|$
 \end{enumerate}
+\section{Función de activación}
+Una vez que aplicamos la función de scoring, para determinar si la neurona se enciende o no utilizamos una función de
+activación.
+\begin{itemize}
+ \item Función sigmoide: Esta función es una buena opción ya que es continua y diferenciable donde sea, es simetrica
+ en en eje y tiene una aproximación asintótica a los valores de saturación (0,1).
+ 
+\end{itemize}
+
+
 \end{document}
 
